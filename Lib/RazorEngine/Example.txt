@@ -1,0 +1,34 @@
+https://github.com/Antaris/RazorEngine
+
+Quick Start Guide
+
+To get started using the Razor Templating Engine, add a reference to RazorEngine.dll to your project (it requires System.Web.Razor.dll, included in the release). Once you've added the reference, you can start parsing templates.
+Simple Template Parsing
+
+  string template = "Hello @Model.Name! Welcome to Razor!"
+  string result = Razor.Parse(template, new { Name = "World" });
+
+In the above example, I am using an anonymous object to populate the Model property of the base template.
+Inline Helper Support
+
+  string template = 
+  @"@helper MyMethod(string name) {
+      Hello @name
+  }
+  @MyMethod(Model.Name)! Welcome to Razor!";
+  string result = Razor.Parse(template, new { Name = "World" });
+
+Inline helpers are particularly useful for repeating complex subtemplates within a large template.
+Precompiling Templates
+
+You can precompile your templates before use if you have any really nontrivial views to compile.
+    string template = "Some really complex template that will take time to parse";
+    
+    Razor.Compile(template, "complex");
+    Razor.Run("complex");
+
+If your template requires a model you can pass in your model type or, if your type is anonymous, you can call the CompileWithAnonymous() method. It is not necessary to pass in your Anonymous type.
+    Razor.Compile(template, typeof(SomeModel), "complex");
+    Razor.CompileWithAnonymous(template, "complex");
+    
+    
